@@ -1,0 +1,17 @@
+{
+ "title": "Flood water in Sindh, September 2022",
+ "sources": [
+  "Copernicus Sentinel-1 GRD via Earth Engine",
+  "JRC Global Surface Water 1.4"
+ ],
+ "crs": "UTM 42N, EPSG:32642",
+ "scale_bar": true,
+ "boundary_note": "",
+ "status": "final",
+ "note": "Threshold -14.1 dB from Otsu; area 3458 km2, not validated against field or optical data.",
+ "files": [
+  "map_sindh_flood_2022.pdf",
+  "map_sindh_flood_2022.png",
+  "map_sindh_flood_2022.svg"
+ ]
+}

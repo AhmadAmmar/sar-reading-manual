@@ -1,0 +1,6 @@
+\snippetcaption{src/sarlib.py, mean\_db(), lines 30--32}
+\begin{lstlisting}[firstnumber=30]
+def mean_db(collection, band):
+    """Average in linear power and return to dB, because averaging decibels understates bright targets."""
+    return collection.select(band).map(to_linear).mean().log10().multiply(10).rename(band)
+\end{lstlisting}

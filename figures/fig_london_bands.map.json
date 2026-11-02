@@ -1,0 +1,16 @@
+{
+ "title": "London by polarisation",
+ "sources": [
+  "Copernicus Sentinel-1 GRD via Earth Engine"
+ ],
+ "crs": "British National Grid, EPSG:27700",
+ "scale_bar": "Same extent as the map of London, shown for comparison of bands.",
+ "boundary_note": "",
+ "status": "final",
+ "note": "",
+ "files": [
+  "fig_london_bands.pdf",
+  "fig_london_bands.png",
+  "fig_london_bands.svg"
+ ]
+}

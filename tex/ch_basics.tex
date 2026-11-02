@@ -1,0 +1,54 @@
+\chapter{How to read a radar image: London}\label{sec:basics}
+
+\section{What the satellite measures}
+Sentinel-1 sends microwave pulses at a wavelength of about 5.5~cm and records what returns. It supplies its own signal, so it works at night and sees through cloud. The picture therefore shows how surfaces send energy back, which is different from colour. Three things control the return: how rough a surface is at the scale of the wavelength, its geometry, and how wet it is.
+
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Surface & Why it looks as it does \\
+\midrule
+Calm water & A smooth mirror reflects the pulse away, so it looks dark \\
+Vegetation & Leaves and branches scatter in many directions, so it looks moderate, with strong VH \\
+Buildings & Walls and ground form corners that send the pulse straight back, so they look very bright \\
+\bottomrule
+\end{tabularx}
+
+\section{The numbers}
+The image holds backscatter, $\sigma^0$, usually in decibels:
+\begin{equation}
+\sigma^0_{\mathrm{dB}} = 10\log_{10}\sigma^0_{\mathrm{linear}}
+\end{equation}
+So 10~dB more is ten times the power, and 3~dB is about double. Polarisation is written as sent and received: VV goes out and returns vertically, whereas VH goes out vertically and returns horizontally. Volume scattering in vegetation changes polarisation, so VH responds strongly to it.
+
+\section{Step 1: choose the scenes}
+We take all ascending Interferometric Wide scenes over London in 2024: \nScenesLondon{} of them. Keeping one pass direction matters, because a building looks different from each side.
+\input{generated/snip_s1.tex}
+
+\section{Step 2: average in the right units}
+Decibels are logarithms, so averaging them understates bright targets. We convert to linear power, average, and convert back:
+\input{generated/snip_mean.tex}
+
+\section{Step 3: see why averaging is needed}
+Radar images have a grain called speckle, which arises when returns from many small scatterers within a pixel interfere. It is not noise in the usual sense, since it would repeat exactly from an identical view, but it hides detail. Over the most uniform 300~m patch in this view, chosen by the code, the spread of VV falls from \stdOne{}~dB in one scene (\sceneDate{}) to \stdMany{}~dB in the mean of the year (Figure~\ref{fig:speckle}).
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{fig_london_speckle.pdf}
+\caption{Central London: one scene (a), the mean of the year (b), and the distribution of values (c).}\label{fig:speckle}\end{figure}
+
+\section{Step 4: build a false-colour image}
+No single band shows everything (Figure~\ref{fig:bands}), so we put three in the display channels: VV as red, VH as green, and VV minus VH as blue.
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{fig_london_bands.pdf}
+\caption{The three bands, each stretched between its 2nd and 98th percentiles.}\label{fig:bands}\end{figure}
+
+\section{Reading the map}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{map_london_false_colour.pdf}
+\caption{London in radar, 2024. VV as red, VH as green, VV minus VH as blue. Numbers are explained in Table~\ref{tab:places}. British National Grid.}\label{fig:london}\end{figure}
+
+\begin{table}[H]\centering\small\caption{Measured values, averaged over a small circle at each numbered place in Figure~\ref{fig:london}.}\label{tab:places}\input{generated/london_places.tex}\end{table}
+
+Look at the map in this order:
+\begin{enumerate}
+\item \textbf{Water (2, 6).} The Thames and the reservoirs are the darkest features. The river's width changes on the map partly because a narrow channel can be mixed in one pixel with its bright banks and bridges.
+\item \textbf{The dense centre (4).} Canary Wharf is extremely bright, because towers form strong corners. Its value is one of the highest in the table.
+\item \textbf{Green space (3, 5).} Hyde Park and Richmond Park stand out as dark green holes in the city. Both polarisations are low, since grass is fairly smooth at this wavelength.
+\item \textbf{Airport (1).} Heathrow's runways are dark stripes, smooth like water, surrounded by bright buildings.
+\end{enumerate}
+\textbf{A caution:} the mean at a marked place depends on exactly where the circle falls, and at the river it can include bridge and bank returns.

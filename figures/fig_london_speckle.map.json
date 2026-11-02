@@ -1,0 +1,16 @@
+{
+ "title": "Speckle in central London",
+ "sources": [
+  "Copernicus Sentinel-1 GRD via Earth Engine"
+ ],
+ "crs": "British National Grid, EPSG:27700",
+ "scale_bar": "Panels show about 10 by 8 km; the graph has no scale.",
+ "boundary_note": "",
+ "status": "final",
+ "note": "",
+ "files": [
+  "fig_london_speckle.pdf",
+  "fig_london_speckle.png",
+  "fig_london_speckle.svg"
+ ]
+}

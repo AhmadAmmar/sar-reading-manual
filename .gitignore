@@ -1,0 +1,12 @@
+data/
+__pycache__/
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+tex/web_figs.*
+tex/main.pdf

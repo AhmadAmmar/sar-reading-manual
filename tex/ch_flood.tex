@@ -1,0 +1,51 @@
+\chapter{Mapping a flood: Sindh, 2022}\label{sec:flood}
+
+\section{The question}
+In 2022 severe floods covered large parts of Pakistan. Cloud often blocks optical satellites during such events, while radar keeps seeing. Open floodwater is smooth, so it turns dark. We therefore look for land that was not dark in a normal year and turned dark during the flood. The area here runs from Manchar Lake along the Indus.
+
+\section{Step 1: a before and an after}
+We take the mean VV over the same weeks of two years, 25~August to 15~September in 2021 (\nPre{} scenes) and 2022 (\nPost{} scenes), so the season is alike. VV is the usual choice for open water, because it separates smooth water well from rougher land.
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{fig_sindh_before_after.pdf}
+\caption{September 2021 (a), September 2022 (b), and a colour combination (c) in which a surface that lost signal in 2022 appears red. UTM 42N.}\label{fig:sindhba}\end{figure}
+
+\section{Step 2: choose a threshold from the data}
+Water and land form two groups in the histogram, so we need the value that best separates them. Otsu's method tries every value $t$, and keeps the one that maximises the variance between the two groups:
+\begin{equation}
+\sigma_b^2(t) = w_0(t)\,w_1(t)\,\bigl[\mu_0(t)-\mu_1(t)\bigr]^2
+\end{equation}
+where $w$ is the share of pixels in each group and $\mu$ its mean. Here it gives \threshold{}~dB (Figure~\ref{fig:hist}).
+\input{generated/snip_otsu.tex}
+\begin{figure}[H]\centering\includegraphics[width=.65\linewidth]{fig_sindh_histogram.pdf}
+\caption{Backscatter in 2022, with the threshold.}\label{fig:hist}\end{figure}
+
+\section{Step 3: separate flood from usual water}
+Three rules define flood: below the threshold in 2022, above it in 2021, and water less than 50\% of the time in the JRC Global Surface Water record.
+\input{generated/snip_rule.tex}
+
+\section{Reading the map}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{map_sindh_flood_2022.pdf}
+\caption{Water in Sindh, September 2022, over VV backscatter. 1 Manchar Lake, 2 Dadu, 3 Sehwan, 4 Nawabshah. UTM 42N.}\label{fig:flood}\end{figure}
+
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+What to look for & How to read it \\
+\midrule
+Around Manchar Lake (1) & The usual lake is blue. The orange beyond it is new water spread along the foot of the western hills \\
+Along the Indus & A wide orange band follows the river, with the usual channel in blue within it \\
+Round Dadu (2) & Bright, higher ground stands out between flooded land, so settlement is a visible island \\
+Round Sehwan (3) & Hills pinch the valley here, and the flood narrows \\
+West, lower left & Bright ridges facing the satellite are the hills. They are terrain, not buildings \\
+\bottomrule
+\end{tabularx}
+
+\section{Results}
+The map shows about \floodKm{}~km$^2$ of flood within the \scanKm{}~km$^2$ scene, and \permanentKm{}~km$^2$ of usual water. Moving the threshold by 2~dB either way gives \floodKmLow{} and \floodKmHigh{}~km$^2$, so the choice matters less than the limits below.
+
+\section{What this cannot tell you}
+\begin{itemize}
+\item \textbf{Not validated.} This is a teaching estimate, and it has not been compared with optical images or field reports.
+\item \textbf{Rice and wet soil.} Flooded fields and irrigated land in September can look like flood. This is likely in scattered patches, especially in the east.
+\item \textbf{Hidden water.} Water beneath trees or crops, or among buildings, may be missed because those surfaces stay bright.
+\item \textbf{Three weeks in one image.} A mean covers several passes, so it shows water present for much of the period, and not one moment.
+\item \textbf{Black areas.} Dark in both years, these may be standing water or smooth sand. They are not counted as flood.
+\end{itemize}

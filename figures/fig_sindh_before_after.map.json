@@ -1,0 +1,16 @@
+{
+ "title": "Sindh before and during the flood",
+ "sources": [
+  "Copernicus Sentinel-1 GRD via Earth Engine"
+ ],
+ "crs": "UTM 42N, EPSG:32642",
+ "scale_bar": "Panels share the extent and scale bar of the flood map.",
+ "boundary_note": "",
+ "status": "final",
+ "note": "",
+ "files": [
+  "fig_sindh_before_after.pdf",
+  "fig_sindh_before_after.png",
+  "fig_sindh_before_after.svg"
+ ]
+}

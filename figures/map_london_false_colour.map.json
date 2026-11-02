@@ -1,0 +1,16 @@
+{
+ "title": "London in radar, 2024",
+ "sources": [
+  "Copernicus Sentinel-1 GRD via Earth Engine"
+ ],
+ "crs": "British National Grid, EPSG:27700",
+ "scale_bar": true,
+ "boundary_note": "",
+ "status": "final",
+ "note": "",
+ "files": [
+  "map_london_false_colour.pdf",
+  "map_london_false_colour.png",
+  "map_london_false_colour.svg"
+ ]
+}

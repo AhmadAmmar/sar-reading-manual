@@ -1,0 +1,12 @@
+\snippetcaption{src/sarlib.py, otsu(), lines 61--69}
+\begin{lstlisting}[firstnumber=61]
+def otsu(values, bins=256):
+    """The threshold that best separates two groups: it maximises the variance between them (Otsu, 1979)."""
+    v = values[np.isfinite(values)]
+    count, edges = np.histogram(v, bins=bins)
+    mids = (edges[:-1] + edges[1:]) / 2
+    w = np.cumsum(count).astype(float)
+    m = np.cumsum(count * mids)
+    between = (m[-1] * w / w[-1] - m) ** 2 / (w * (w[-1] - w) + 1e-9) * w[-1]
+    return float(mids[np.argmax(between)])
+\end{lstlisting}

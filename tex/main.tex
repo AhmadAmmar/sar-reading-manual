@@ -1,0 +1,18 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,graphicx,booktabs,xcolor,listings,float,tabularx}
+\usepackage[margin=24mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{../figures/}}
+\lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,columns=fullflexible,keepspaces=true,numbers=left,numberstyle=\tiny\color{gray},frame=single,rulecolor=\color{gray!40},backgroundcolor=\color{gray!5},showstringspaces=false}
+\newcommand{\snippetcaption}[1]{\par\smallskip\noindent{\footnotesize\textbf{From the code:} \texttt{#1}}\par\nopagebreak}
+\input{generated/values.tex}
+\title{Reading radar images: a working manual\\\large Sentinel-1, step by step, on real places}
+\author{Ahmad Ammar}
+\date{}
+\begin{document}
+\maketitle
+\tableofcontents
+\input{ch_basics}
+\input{ch_flood}
+\end{document}

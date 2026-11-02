@@ -1,0 +1,7 @@
+\snippetcaption{src/02\_sindh\_flood.py, lines 25--28}
+\begin{lstlisting}[firstnumber=25]
+thr = otsu(after)
+wet_after, wet_before = after < thr, before < thr
+flood = wet_after & ~wet_before & (occ < 50)
+permanent = wet_after & (occ >= 50)
+\end{lstlisting}
