@@ -81,7 +81,8 @@ ok = np.isfinite(U) & np.isfinite(M)
 var = uniform_filter(np.nan_to_num(M) ** 2, 30) - uniform_filter(np.nan_to_num(M), 30) ** 2
 var[uniform_filter(ok.astype(float), 30) < 1] = np.inf
 r, c = np.unravel_index(np.argmin(var), var.shape)
-stats = dict(nScenesLondon=n_scenes, sceneDate=scene_date, stdOne=round(float(np.nanstd(U[r - 15:r + 15, c - 15:c + 15])), 2), stdMany=round(float(np.nanstd(M[r - 15:r + 15, c - 15:c + 15])), 2))
+enl = lambda d: (lambda x: round(float(np.nanmean(x) ** 2 / np.nanvar(x)), 1))(10 ** (d[r - 15:r + 15, c - 15:c + 15] / 10))
+stats = dict(enlOne=enl(U), enlMany=enl(M), nScenesLondon=n_scenes, sceneDate=scene_date, stdOne=round(float(np.nanstd(U[r - 15:r + 15, c - 15:c + 15])), 2), stdMany=round(float(np.nanstd(M[r - 15:r + 15, c - 15:c + 15])), 2))
 sample = {}
 pts = {name: (x, y) for _, x, y, name in PLACES}
 coords = ee.FeatureCollection([ee.Feature(ee.Geometry.Point(v).buffer(60), {"place": k}) for k, v in pts.items()])
