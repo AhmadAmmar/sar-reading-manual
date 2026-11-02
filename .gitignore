@@ -11,3 +11,4 @@ __pycache__/
 tex/web_figs.*
 tex/main.pdf
 figures/*_base.png
+build/

@@ -1,0 +1,14 @@
+name = "sar_reading_manual"
+title = "Reading radar images"
+subtitle = "A working manual: Sentinel-1, step by step, on real places"
+author = "Ahmad Ammar"
+layouts = ["manual"]
+source = "tex"
+chapters = ["ch_science", "ch_basics", "ch_flood"]
+defines = ["generated/values"]
+figures = "figures"
+[web]
+site_name = "Reading radar images"
+pdf_name = "Reading_radar_images_Ahmad_Ammar.pdf"
+intro = "A working manual for reading Sentinel-1 radar images, with each step shown on a real place."
+inline = ["snip_", "london_places"]
