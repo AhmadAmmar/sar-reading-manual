@@ -3,6 +3,7 @@ import json
 
 import cartopy.crs as ccrs
 import ee
+import geopandas as gpd
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import ListedColormap
@@ -70,10 +71,13 @@ ax.set_extent(extent, proj)
 g = ax.gridlines(draw_labels=True, linewidth=0.2, color="white", alpha=0.5)
 g.top_labels = g.right_labels = False
 g.xlabel_style = g.ylabel_style = {"size": 6.5}
+rivers = gpd.read_file(DATA / "indus_river_lines.geojson")
+ax.add_geometries(rivers.geometry, ccrs.PlateCarree(), facecolor="none", edgecolor="white", linewidth=1.6, zorder=8)
+ax.add_geometries(rivers.geometry, ccrs.PlateCarree(), facecolor="none", edgecolor="#00E5FF", linewidth=0.8, zorder=9)
 carto.mark(ax, [(n, x, y) for n, x, y, _ in PLACES])
 carto.scale_bar(ax, "lower right")
-ax.legend([plt.Rectangle((0, 0), 1, 1, color="#E69F00"), plt.Rectangle((0, 0), 1, 1, color="#0072B2")], ["Flood, not wet in 2021", "Usual water"], loc="upper left", fontsize=7, frameon=True)
+ax.legend([plt.Rectangle((0, 0), 1, 1, color="#E69F00"), plt.Rectangle((0, 0), 1, 1, color="#0072B2"), plt.Line2D([0], [0], color="#00E5FF", lw=1.2)], ["Flood, not wet in 2021", "Usual water", "Mapped river course"], loc="upper left", fontsize=7, frameon=True)
 carto.locator(fig, [0.17, 0.13, 0.17, 0.18], [60, 78, 23, 38], (BOX[0], BOX[2], BOX[1], BOX[3]))
 carto.credit(fig, "Contains modified Copernicus Sentinel data 2021-2022; JRC Global Surface Water")
-carto.finish_map(fig, FIG / "map_sindh_flood_2022", title="Flood water in Sindh, September 2022", sources=["Copernicus Sentinel-1 GRD via Earth Engine", "JRC Global Surface Water 1.4"], crs="UTM 42N, EPSG:32642", boundary_note=False, note=f"Threshold {thr:.1f} dB from Otsu; area {stats['floodKm']} km2, not validated against field or optical data.")
+carto.finish_map(fig, FIG / "map_sindh_flood_2022", title="Flood water in Sindh, September 2022", sources=["Copernicus Sentinel-1 GRD via Earth Engine", "JRC Global Surface Water 1.4", "HydroRIVERS via Free Flowing Rivers"], crs="UTM 42N, EPSG:32642", boundary_note=False, note=f"Threshold {thr:.1f} dB from Otsu; area {stats['floodKm']} km2, not validated against field or optical data.")
 plt.close(fig)

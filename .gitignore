@@ -10,3 +10,4 @@ __pycache__/
 *.fdb_latexmk
 tex/web_figs.*
 tex/main.pdf
+figures/*_base.png

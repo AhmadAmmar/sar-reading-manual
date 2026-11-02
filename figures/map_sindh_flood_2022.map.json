@@ -2,7 +2,8 @@
  "title": "Flood water in Sindh, September 2022",
  "sources": [
   "Copernicus Sentinel-1 GRD via Earth Engine",
-  "JRC Global Surface Water 1.4"
+  "JRC Global Surface Water 1.4",
+  "HydroRIVERS via Free Flowing Rivers"
  ],
  "crs": "UTM 42N, EPSG:32642",
  "scale_bar": true,
