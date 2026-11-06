@@ -8,6 +8,8 @@ chapters = ["ch_science", "ch_basics", "ch_flood"]
 defines = ["generated/values"]
 figures = "figures"
 [web]
+edit_url = "https://github.dev/AhmadAmmar/sar-reading-manual/tree/main/tex"
+rename_url = "https://github.com/AhmadAmmar/AhmadAmmar.github.io/actions/workflows/rename-page.yml"
 site_url = "https://ahmadammar.github.io"
 parent_url = "/teaching/"
 site_name = "Reading radar images"
