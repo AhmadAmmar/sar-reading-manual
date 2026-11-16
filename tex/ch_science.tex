@@ -75,7 +75,7 @@ The Earth Engine collection \texttt{COPERNICUS/S1\_GRD} holds Ground Range Detec
 \item \textbf{Terrain correction:} moved to map position with a digital elevation model.
 \item \textbf{Conversion to dB.}
 \end{enumerate}
-It has not had speckle filtering or radiometric terrain flattening, so slopes facing the satellite stay bright. ``Detected'' also means phase has been discarded, so these scenes cannot be used for interferometry, and subsidence needs a different product.
+It has not had speckle filtering or radiometric terrain flattening, so slopes facing the satellite stay bright. ``Detected'' also means phase has been discarded, so these scenes cannot be used for interferometry; heights and motion need the single look complex (SLC) product, or ready-made interferograms such as ASF HyP3 for Sentinel-1 and NISAR's GUNW.
 
 \section{Three distortions of mountains}
 Because radar measures distance, tall things shift towards the sensor:
@@ -84,7 +84,35 @@ Because radar measures distance, tall things shift towards the sensor:
 \item \textbf{Layover:} the top of a steep slope or tower returns before its base, and appears displaced towards the sensor.
 \item \textbf{Shadow:} slopes facing away receive no signal and look black.
 \end{itemize}
-You can see the first of these in the hills in the lower left of the Sindh map, and the second in London's towers. In both cases brightness reflects geometry, not material.
+You can see the first of these in the hills in the lower left of the Sindh map, and the second in London's towers. In both cases brightness reflects geometry, not material. In high mountains these are not details: along the Karakoram Highway large parts of every valley are in layover or shadow from one pass direction, which is why ascending and descending passes are combined and why such pixels are masked before any height or motion is read from them.
+
+\section{Wavelength: C band and L band}
+The wavelength decides what the radar interacts with. Sentinel-1's C band ($\lambda \approx 5.5$~cm) is scattered by leaves, twigs and small stones, so it sees the top of a canopy and the texture of a surface. NISAR's L band ($\lambda \approx 24$~cm, launched 2025) passes through leaves and is scattered by trunks, branches and the ground, so it sees deeper into vegetation. For interferometry this matters most: longer waves change less when leaves move or snow settles, so L-band images taken twelve days apart still match on slopes where C-band images have lost all phase coherence. In steep, vegetated, debris-covered mountains such as the Karakoram this is the difference between a usable measurement and noise.
+
+\section{Phase: what interferometry measures}
+Every radar pixel is a complex number: an amplitude (the backscatter used so far) and a phase, the fraction of a wavelength left over on the trip to the ground and back. One image's phase looks random, because each pixel holds many scatterers. But two images of the same place taken from nearly the same orbit share that randomness, so multiplying one by the complex conjugate of the other cancels it and leaves the phase difference, the interferogram. That difference is a sum of contributions \cite{hanssen2001}:
+\begin{equation}
+\Delta\varphi = \Delta\varphi_{\mathrm{flat}} + \Delta\varphi_{\mathrm{elevation}} + \Delta\varphi_{\mathrm{displacement}} + \Delta\varphi_{\mathrm{atmosphere}} + \Delta\varphi_{\mathrm{noise}} + \Delta\varphi_{\mathrm{error}}
+\end{equation}
+Only the first three carry signal. The flat-earth term is a ramp from the curvature of the reference ellipsoid and is removed with the orbits. Which of the other two is wanted decides the job:
+\begin{itemize}
+\item \textbf{Heights (a DEM).} Choose a pair a few days apart, so the ground has not moved, with a large perpendicular baseline $B_\perp$ (distance between the two orbits). The topographic phase gives height,
+\begin{equation}
+z = -\frac{\lambda R_0 \sin\theta}{4\pi B_\perp}\,\Delta\varphi_{\mathrm{topo}}, \qquad h_a = \frac{\lambda R_0 \sin\theta}{2 B_\perp},
+\end{equation}
+where $R_0$ is slant range, $\theta$ the look angle, and $h_a$ the height of ambiguity: the height change that makes one full fringe. A larger baseline gives a smaller $h_a$, finer height and denser fringes.
+\item \textbf{Motion.} Remove the topography with an existing DEM; what remains is motion along the line of sight,
+\begin{equation}
+d_{\mathrm{LOS}} = \frac{\lambda}{4\pi}\,\Delta\varphi_{\mathrm{disp}}, \qquad v = \frac{d_{\mathrm{LOS}}}{\Delta T}.
+\end{equation}
+There is no baseline in this equation: one fringe is half a wavelength of motion, 2.8~cm for Sentinel-1 and 12~cm for NISAR. That is why interferometry sees millimetres, and also why any DEM error or atmospheric delay leaks straight into apparent motion.
+\end{itemize}
+
+\section{Unwrapping}
+The interferometer measures phase only modulo $2\pi$: the true phase is the measured value plus an unknown whole number of cycles, which is why interferograms look like repeating rainbow fringes. Unwrapping recovers the missing cycles and turns the fringes into one continuous surface. The usual tool is SNAPHU \cite{chen2001snaphu}, which finds the solution of lowest statistical cost over the whole image. Practical settings, which decide whether it works at all \cite{shah2026snaphu}: use as few tiles as memory allows, because every seam between tiles is a place the solution can break; give tiles an overlap of 100 to 200 pixels (an overlap of zero leaves nothing to align and often gives an empty output); start with the minimum cost flow (MCF) method rather than a spanning tree; and set the cost mode to TOPO for heights and DEFO for motion. Unwrapping fails where coherence is low (water, snow, layover, fast change), so those pixels are masked, not guessed.
+
+\section{Polarimetry and covariance}
+A dual-polarised image gives two intensities, VV and VH (or HH and HV). A fully polarimetric radar also keeps the phase between polarisations, and the natural way to store that is a covariance matrix per pixel. NISAR's geocoded covariance product (GCOV) does this \cite{shiroma2024gcov}: its diagonal terms (HHHH, HVHV, VVVV, VHVH) are the familiar powers, converted to decibels with $10\log_{10}$, and are already terrain corrected ($\gamma^0$); the off-diagonal terms, when present, are complex and allow decompositions into surface, double-bounce and volume scattering (Freeman--Durden) or entropy, anisotropy and angle (Cloude--Pottier). One file can hold two frequency groups with different polarisations, and each comes with a mask: values 1 to 5 are valid (the sub-swath the data came from), 0 is invalid and 255 is outside the image. The gaps the mask leaves are a statement about quality and should be respected, not filled \cite{shah2026gcov}.
 
 \section{Reading rules}
 \begin{enumerate}

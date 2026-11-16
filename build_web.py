@@ -20,7 +20,7 @@ PREAMBLE = [
     SNIPPET,
 ]
 PROJECT = T.Project(
-    root=TEX, aux=TEX / "main.aux", url="/teaching/sar/", out=SITE / "src/sar", figures=SITE / "teaching/sar/fig",
+    root=TEX, bibliography=TEX / "references.bib", aux=TEX / "main.aux", url="/teaching/sar/", out=SITE / "src/sar", figures=SITE / "teaching/sar/fig",
     chapters=[T.Chapter("the-science", TEX / "ch_science.tex"), T.Chapter("reading-radar-london", TEX / "ch_basics.tex"), T.Chapter("mapping-a-flood-sindh", TEX / "ch_flood.tex")],
     preamble=PREAMBLE,
     macros=(TEX / "generated/values.tex").read_text(encoding="utf8") + "\n" + SNIPPET + "\n",
