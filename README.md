@@ -11,7 +11,13 @@ A working manual for reading Sentinel-1 radar images, step by step, on real plac
 1. How to read a radar image: London
 2. Mapping a flood: Sindh, 2022
 
-More are planned on forests, urban growth, ships, ice, conflict damage and subsidence.
+Planned next, built from real runs in [kkh-hazard](https://github.com/AhmadAmmar/kkh-hazard) on the Karakoram Highway:
+
+3. Heights from phase: a DEM from a Sentinel-1 pair over Hunza (HyP3, phase to height, SNAPHU TOPO), checked against Copernicus GLO-30 and Google GEM-15
+4. Moving slopes: NISAR L-band interferograms and pixel offsets over landslides along the highway (SNAPHU DEFO, velocity)
+5. Covariance and polarimetry: NISAR GCOV over the corridor, masks, dual-pol ratios and full-pol decompositions
+
+Then forests, urban growth, ships, ice, conflict damage and subsidence.
 
 ## Rebuild
 
