@@ -6,6 +6,7 @@ layouts = ["manual"]
 source = "tex"
 chapters = ["ch_science", "ch_basics", "ch_flood"]
 defines = ["generated/values"]
+bibliography = "references.bib"
 figures = "figures"
 [web]
 edit_url = "https://github.dev/AhmadAmmar/sar-reading-manual/tree/main/tex"
