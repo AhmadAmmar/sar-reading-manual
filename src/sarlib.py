@@ -24,6 +24,7 @@ def s1(region, start, end, orbit=None):
 
 
 def to_linear(db):
+    """Earth Engine image converted from decibels to linear power: 10^(dB/10)."""
     return ee.Image(10).pow(ee.Image(db).divide(10))
 
 
@@ -45,6 +46,7 @@ def download(image, name, region, crs, scale):
 
 
 def read(path):
+    """All bands of a raster as a float array with nodata set to NaN, and its profile."""
     with rasterio.open(path) as s:
         a = s.read().astype(float)
         if s.nodata is not None:

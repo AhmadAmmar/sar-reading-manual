@@ -26,6 +26,7 @@ ext = (b.left, b.right, b.bottom, b.top)
 
 
 def sindh(ax, fig):
+    """Panel: Sindh flood, post-event backscatter with water and flooded-land classes."""
     ax.imshow(stretch(after, 2, 98), cmap="gray", extent=ext, origin="upper", transform=utm)
     ax.imshow(np.ma.masked_invalid(cls), cmap=ListedColormap(["#0072B2", "#E69F00"]), vmin=1, vmax=2, extent=ext, origin="upper", transform=utm, interpolation="nearest")
     ax.set_extent(ext, utm)
@@ -55,6 +56,7 @@ n = json.loads((DATA / "london_stats.json").read_text())["nScenesLondon"]
 
 
 def london(ax, fig):
+    """Panel: London RGB composite with numbered places marked."""
     ax.imshow(rgb, extent=ext2, origin="upper", transform=osgb, interpolation="nearest")
     ax.set_extent(ext2, osgb)
     ax.gridlines(linewidth=0.2, color="white", alpha=0.4)
